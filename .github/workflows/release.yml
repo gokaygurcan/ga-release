@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release' && github.event.action == 'published'
-    needs: [ setup ]
+    needs: [ release ]
     steps:
     - id: print-context
       name: Print context
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release' && github.event.action == 'unpublished'
-    needs: [ setup ]
+    needs: [ release ]
     steps:
     - id: print-context
       name: Print context
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release' && github.event.action == 'created'
-    needs: [ setup ]
+    needs: [ release ]
     steps:
     - id: print-context
       name: Print context
@@ -121,7 +121,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release' && github.event.action == 'edited'
-    needs: [ setup ]
+    needs: [ release ]
     steps:
     - id: print-context
       name: Print context
@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release' && github.event.action == 'deleted'
-    needs: [ setup ]
+    needs: [ release ]
     steps:
     - id: print-context
       name: Print context
@@ -149,7 +149,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release' && github.event.action == 'prereleased'
-    needs: [ setup ]
+    needs: [ release ]
     steps:
     - id: print-context
       name: Print context
@@ -163,7 +163,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release' && github.event.action == 'released'
-    needs: [ setup ]
+    needs: [ release ]
     steps:
     - id: print-context
       name: Print context
