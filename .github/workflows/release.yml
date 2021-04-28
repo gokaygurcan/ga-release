@@ -119,8 +119,9 @@ jobs:
       name: Tag commit
       run: |
         VERSION=v$(npx semver --increment patch $(git tag --sort=committerdate --list | tail -n1))
-        git tag -a $VERSION -m "$VERSION"
-        git push origin $VERSION
+        #git tag -a $VERSION -m "$VERSION"
+        #git push origin $VERSION
+        echo $VERSION
 
   release:
     name: Release
