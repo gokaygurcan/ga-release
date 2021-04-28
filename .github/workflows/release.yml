@@ -121,7 +121,7 @@ jobs:
       run: |
         git fetch --all --verbose
         #git tag --list
-        git show-ref --tags -d
+        #git show-ref --tags -d
         git ls-remote --tags origin
         
         #npx semver --increment patch $(/usr/bin/git tag --sort=committerdate --list | tail -n1)
