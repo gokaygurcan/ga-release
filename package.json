@@ -1,0 +1,10 @@
+{
+    "name": "@gokaygurcan/ga-release",
+    "version": "1.0.0",
+    "private": true,
+    "repository": "gokaygurcan/ga-release",
+    "license": "MIT",
+    "dependencies": {
+        "semver": "7.3.5"
+    }
+}
