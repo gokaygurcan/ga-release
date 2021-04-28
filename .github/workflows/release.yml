@@ -119,7 +119,12 @@ jobs:
     - id: tag-commit
       name: Tag commit
       run: |
-        npx semver --increment patch $(/usr/bin/git tag --sort=committerdate --list | tail -n1)
+        pwd
+        ls -lah .git
+        git --version
+        which git
+        
+        #npx semver --increment patch $(/usr/bin/git tag --sort=committerdate --list | tail -n1)
         
         #VERSION=v$(npx semver --increment patch $(git tag --sort=committerdate --list | tail -n1))
         #git tag -a $VERSION -m "$VERSION"
