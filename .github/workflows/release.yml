@@ -119,7 +119,7 @@ jobs:
     - id: tag-commit
       name: Tag commit
       env:
-        VERSION: $(git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')"
+        VERSION: $(git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')
       run: |
         echo $VERSION
         NEW_VERSION=v$(npx semver --increment patch $VERSION)
