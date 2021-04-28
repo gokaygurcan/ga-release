@@ -25,6 +25,8 @@ jobs:
   setup:
     name: Setup
     runs-on: ubuntu-latest
+    outputs:
+      build-number: ${{ steps.variables.outputs.build-number }}
     steps:
     - id: setup-node
       name: Setup Node.js
@@ -82,6 +84,12 @@ jobs:
         (steps.cache-dependencies.outputs.cache-hit != 'true')
       run: |
         npm install
+        
+    - id: variables
+      name: Variables
+      run: |
+        git fetch --all --verbose
+        echo '::set-output name=build-number::"$(git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')"'
 
   tag:
     name: Tag
@@ -119,12 +127,13 @@ jobs:
     - id: tag-commit
       name: Tag commit
       run: |
-        git fetch --all --verbose
-        LASTVERSION=$(git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')
+        #git fetch --all --verbose
+        #LASTVERSION=$(git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')
         
-        npx semver --increment patch $LASTVERSION
+        VERSION=v$(npx semver --increment patch ${{ needs.setup.outputs.build-number }})
+        echo $VERSION
         
-        #VERSION=v$(npx semver --increment patch $(git tag --sort=committerdate --list | tail -n1))
+        #${{ github.run_number }}
         #git tag -a $VERSION -m "$VERSION"
         #git push origin $VERSION
 
