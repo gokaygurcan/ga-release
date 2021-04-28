@@ -1,0 +1,173 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+      - unpublished
+      - created
+      - edited
+      - deleted
+      - prereleased
+      - released
+
+env:
+  NODE_VERSION: '10.x'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    steps:
+    - id: setup-node
+      name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - id: sanity-check
+      name: Sanity check
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+        JOB_CONTEXT: ${{ toJson(job) }}
+        STEPS_CONTEXT: ${{ toJson(steps) }}
+        RUNNER_CONTEXT: ${{ toJson(runner) }}
+        STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        MATRIX_CONTEXT: ${{ toJson(matrix) }}
+      run: |
+        printenv
+        echo "$PATH"
+        echo "$GITHUB_CONTEXT"
+        echo "$JOB_CONTEXT"
+        echo "$STEPS_CONTEXT"
+        echo "$RUNNER_CONTEXT"
+        echo "$STRATEGY_CONTEXT"
+        echo "$MATRIX_CONTEXT"
+        which node
+        node --version
+        which npm
+        npm --version
+        which grunt
+        grunt --version
+        which make
+        make --version
+        which jq
+        jq --version
+        pwd
+        ls -lah .
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release'
+    needs: [ setup ]
+    steps:
+    - id: print-context
+      name: Print context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+
+  release-published:
+    name: Release > published
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release' && github.event.action == 'published'
+    needs: [ setup ]
+    steps:
+    - id: print-context
+      name: Print context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+
+  release-unpublished:
+    name: Release > unpublished
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release' && github.event.action == 'unpublished'
+    needs: [ setup ]
+    steps:
+    - id: print-context
+      name: Print context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+
+  release-created:
+    name: Release > created
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release' && github.event.action == 'created'
+    needs: [ setup ]
+    steps:
+    - id: print-context
+      name: Print context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+
+  release-edited:
+    name: Release > edited
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release' && github.event.action == 'edited'
+    needs: [ setup ]
+    steps:
+    - id: print-context
+      name: Print context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+
+  release-deleted:
+    name: Release > deleted
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release' && github.event.action == 'deleted'
+    needs: [ setup ]
+    steps:
+    - id: print-context
+      name: Print context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+
+  release-prereleased:
+    name: Release > prereleased
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release' && github.event.action == 'prereleased'
+    needs: [ setup ]
+    steps:
+    - id: print-context
+      name: Print context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+
+  release-released:
+    name: Release > released
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release' && github.event.action == 'released'
+    needs: [ setup ]
+    steps:
+    - id: print-context
+      name: Print context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
