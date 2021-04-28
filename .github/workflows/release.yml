@@ -120,7 +120,7 @@ jobs:
       name: Tag commit
       run: |
         git fetch --all --verbose
-        git tag --list
+        #git tag --list
         git show-ref --tags -d
         git ls-remote --tags origin
         
