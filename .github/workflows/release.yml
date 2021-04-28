@@ -120,11 +120,9 @@ jobs:
       name: Tag commit
       run: |
         git fetch --all --verbose
-        #git tag --list
-        #git show-ref --tags -d
-        git ls-remote --tags origin
+        LASTVERSION=$(git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')
         
-        #npx semver --increment patch $(/usr/bin/git tag --sort=committerdate --list | tail -n1)
+        npx semver --increment patch $LASTVERSION
         
         #VERSION=v$(npx semver --increment patch $(git tag --sort=committerdate --list | tail -n1))
         #git tag -a $VERSION -m "$VERSION"
