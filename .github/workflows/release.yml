@@ -118,10 +118,11 @@ jobs:
     - id: tag-commit
       name: Tag commit
       run: |
-        VERSION=v$(npx semver --increment patch $(git tag --sort=committerdate --list | tail -n1))
+        npx semver --increment patch 1.0.0
+        
+        #VERSION=v$(npx semver --increment patch $(git tag --sort=committerdate --list | tail -n1))
         #git tag -a $VERSION -m "$VERSION"
         #git push origin $VERSION
-        echo $VERSION
 
   release:
     name: Release
