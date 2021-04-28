@@ -119,10 +119,13 @@ jobs:
     - id: tag-commit
       name: Tag commit
       env:
-        VERSION: $(git fetch && git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')
+        VERSION: $()
       run: |
-        echo $VERSION
-        NEW_VERSION=v$(npx semver --increment patch $VERSION)
+        git fetch --all --verbose
+        
+        LAST_VERSION=$(git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')
+        
+        NEW_VERSION=v$(npx semver --increment patch $LAST_VERSION)
         echo $NEW_VERSION
         
         #${{ github.run_number }}
