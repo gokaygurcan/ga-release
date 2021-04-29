@@ -116,11 +116,13 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --list
 
-    - id: tag-commit
-      name: Tag commit
+    - id: bump
+      name: Bump
       uses: actions/github-script@v4
       with:
         github-token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+        debug: true
+        result-encoding: string
         script: |
           const semver = require('semver');
           
@@ -133,24 +135,20 @@ jobs:
           const lastTag = tags.data[0].name;
           const lastRelease = releases.data[0].tag_name;
           const lastVersion = lastTag.split('.').slice(0, -1).join('.');
-          const newVersion = `${(lastTag === lastRelease) ? 'v' + semver.inc(lastVersion, 'patch') : lastVersion}.${context.runNumber}`;
+          const version = `${(lastTag === lastRelease) ? 'v' + semver.inc(lastVersion, 'patch') : lastVersion}.${context.runNumber}`;
           
-          core.setOutput('newVersion', newVersion);
-          
-          const result = await github.git.createTag({
-            owner,
-            repo,
-            tag: newVersion,
-            message: newVersion,
-            object: context.sha,
-            type: 'commit',
-            tagger: {
-              name: 'GitHub Actions',
-              email: 'actions@github.com'
-            }
-          }).catch(console.log);
-          
-          core.setOutput('result', result);
+          core.info(`version: ${version}`);
+
+    - id: push-tag
+      name: Push tag
+      env:
+        VERSION: ${{ steps.bump.outputs.version }}
+      run: |
+        echo "$VERSION"
+        
+        # push new tag
+        git tag -a $VERSION -m "$VERSION"
+        git push origin $VERSION
 
   release:
     name: Release
