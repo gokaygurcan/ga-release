@@ -1,6 +1,8 @@
 # ga-release
 
-testing something, will remove later.
+testing something, will remove later. 
+
+i think it worked, stay tuned for final results.
 
 ---
 
