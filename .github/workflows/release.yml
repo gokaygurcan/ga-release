@@ -139,19 +139,22 @@ jobs:
           
           core.info(`version: ${version}`);
           core.setOutput('version', version);
+          core.setOutput('last-tag', lastTag);
           
           return version;
 
     - id: push-tag
       name: Push tag
       env:
+        SHA: ${{ github.sha }}
+        LAST_TAG: ${{ steps.bump.outputs.last-tag }}
         VERSION: ${{ steps.bump.outputs.version }}
       run: |
         echo "$VERSION"
         
         # push new tag
-        git tag -a $VERSION -m "$VERSION"
-        git push origin $VERSION
+        git tag -a $VERSION -m '$(git log $LAST_TAG...$SHA --oneline --no-merges --pretty="format: %s (%al) [%h]")'
+        git push origin $VERSIONs
 
   release:
     name: Release
