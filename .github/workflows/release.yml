@@ -121,6 +121,17 @@ jobs:
       run: |
         git fetch --all --verbose
         
+        # echoes, https://www.youtube.com/watch?v=53N99Nim6WE
+        echo "0"
+        echo $(git ls-remote --tags --sort=version:refname origin)
+        echo "1"
+        echo $(git ls-remote --tags --sort=version:refname origin | awk '!/\^\{\}$/')
+        echo "2"
+        echo $(git ls-remote --tags --sort=version:refname origin | awk '!/\^\{\}$/' | tail -n1)
+        echo "3"
+        echo $(git ls-remote --tags --sort=version:refname origin | awk '!/\^\{\}$/' | tail -n1 | sed 's/.*refs\/tags\///g')
+        echo "4"
+        
         # list remote tags, ignore dereferenced tags, get the last one, leave only the version part
         LAST_VERSION=$(git ls-remote --tags --sort=version:refname origin | awk '!/\^\{\}$/' | tail -n1 | sed 's/.*refs\/tags\///g')
         
