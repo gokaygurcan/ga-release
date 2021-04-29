@@ -151,7 +151,7 @@ jobs:
         
         # push new tag
         git tag -a $VERSION -m "$VERSION"
-        git push origin $VERSIONs
+        git push origin $VERSION
 
   release:
     name: Release
