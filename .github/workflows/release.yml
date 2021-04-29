@@ -122,7 +122,7 @@ jobs:
         git fetch --all --verbose
         
         # list remote tags, ignore dereferenced tags, get the last one, leave only the version part
-        LAST_VERSION=$(git ls-remote --tags --sort=version:refname origin | awk '!/\^{}$/' | tail -n1 | sed 's/.*refs\/tags\///g')
+        LAST_VERSION=$(git ls-remote --tags --sort=version:refname origin | awk '!/\^\{\}$/' | tail -n1 | sed 's/.*refs\/tags\///g')
         
         # bump version to next patch, prepend with build number
         NEW_VERSION=v$(npx semver --increment patch $LAST_VERSION).${{ github.run_number }}
