@@ -121,11 +121,14 @@ jobs:
       run: |
         git fetch --all --verbose
         
-        LAST_VERSION=$(git ls-remote --tags --sort=version:refname origin | tail -n1 | sed 's/.*refs\/tags\///g')
+        # list remote tags, ignore dereferenced tags, get the last one, leave only the version part
+        LAST_VERSION=$(git ls-remote --tags --sort=version:refname origin | awk '!/\^{}$/' | tail -n1 | sed 's/.*refs\/tags\///g')
         
+        # bump version to next patch, prepend with build number
         NEW_VERSION=v$(npx semver --increment patch $LAST_VERSION).${{ github.run_number }}
         echo $NEW_VERSION
         
+        # push new tag
         git tag -a $NEW_VERSION -m "$NEW_VERSION"
         git push origin $NEW_VERSION
 
@@ -147,7 +150,7 @@ jobs:
     name: Release > published
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'release' && github.event.action == 'published'
+      github.event.action == 'published'
     needs: [ tag, release ]
     steps:
     - id: print-context
@@ -161,7 +164,7 @@ jobs:
     name: Release > unpublished
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'release' && github.event.action == 'unpublished'
+      github.event.action == 'unpublished'
     needs: [ tag, release ]
     steps:
     - id: print-context
@@ -175,7 +178,7 @@ jobs:
     name: Release > created
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'release' && github.event.action == 'created'
+      github.event.action == 'created'
     needs: [ tag, release ]
     steps:
     - id: print-context
@@ -189,7 +192,7 @@ jobs:
     name: Release > edited
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'release' && github.event.action == 'edited'
+      github.event.action == 'edited'
     needs: [ tag, release ]
     steps:
     - id: print-context
@@ -203,7 +206,7 @@ jobs:
     name: Release > deleted
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'release' && github.event.action == 'deleted'
+      github.event.action == 'deleted'
     needs: [ tag, release ]
     steps:
     - id: print-context
@@ -217,7 +220,7 @@ jobs:
     name: Release > prereleased
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'release' && github.event.action == 'prereleased'
+      github.event.action == 'prereleased'
     needs: [ tag, release ]
     steps:
     - id: print-context
@@ -231,7 +234,7 @@ jobs:
     name: Release > released
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'release' && github.event.action == 'released'
+      github.event.action == 'released'
     needs: [ tag, release ]
     steps:
     - id: print-context
