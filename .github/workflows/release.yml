@@ -122,19 +122,21 @@ jobs:
       with:
         github-token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
         script: |
+          const semver = require('semver');
+          
           const owner = context.payload.repository.owner.login;
           const repo = context.payload.repository.name;
-
+          
           const tags = await github.repos.listTags({ owner, repo, per_page: 1, page: 1 }).catch(console.log);
           const releases = await github.repos.listReleases({ owner, repo, per_page: 1, page: 1 }).catch(console.log);
-
+          
           const lastTag = tags.data[0].name;
           const lastRelease = releases.data[0].tag_name;
           const lastVersion = lastTag.split('.').slice(0, -1).join('.');
           const newVersion = `${(lastTag === lastRelease) ? 'v' + semver.inc(lastVersion, 'patch') : lastVersion}.${runNumber}`;
-
+          
           core.setOutput('newVersion', newVersion);
-
+          
           const result = await github.git.createTag({
             owner,
             repo,
