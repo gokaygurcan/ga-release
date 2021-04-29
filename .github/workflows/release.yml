@@ -138,6 +138,9 @@ jobs:
           const version = `${(lastTag === lastRelease) ? 'v' + semver.inc(lastVersion, 'patch') : lastVersion}.${context.runNumber}`;
           
           core.info(`version: ${version}`);
+          core.setOutput('version', version);
+          
+          return version;
 
     - id: push-tag
       name: Push tag
