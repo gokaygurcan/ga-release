@@ -133,7 +133,7 @@ jobs:
           const lastTag = tags.data[0].name;
           const lastRelease = releases.data[0].tag_name;
           const lastVersion = lastTag.split('.').slice(0, -1).join('.');
-          const newVersion = `${(lastTag === lastRelease) ? 'v' + semver.inc(lastVersion, 'patch') : lastVersion}.${runNumber}`;
+          const newVersion = `${(lastTag === lastRelease) ? 'v' + semver.inc(lastVersion, 'patch') : lastVersion}.${context.runNumber}`;
           
           core.setOutput('newVersion', newVersion);
           
